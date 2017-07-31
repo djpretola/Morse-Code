@@ -152,6 +152,7 @@ void MorseTree::printTreeArray()
 			std::cout << ' ';
 		}
 	}
+	std::cout << '\n';
 }
 
 /* Perform a Pre-Order transversal of the tree to find the specified character and then

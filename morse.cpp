@@ -15,12 +15,15 @@ int main()
 
 	MorseTree mt((char*)tree,TREELENGTH);
 
+	//Print the tree structure
+	mt.printTree();
+	mt.printTreeArray();
+
 	//find the Morse Code for the letter q
 	mt.Ascii2Morse('q',ms);
-	std::cout << "About to print the code\n"; //DEBUG
-	std::cout << "Morse Code for Q: ";
 
-	//Display the code
+	//Display the code for the letter q.
+	std::cout << "Morse Code for Q: ";
 	char c;
 	do
 	{
@@ -28,7 +31,6 @@ int main()
 		std::cout << c;
 	}while(c != 0);
 	std::cout << '\n';
-	std::cout << "Finnished printing the code\n"; //DEBUG
 
 	return 0;
 }
