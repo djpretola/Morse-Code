@@ -113,7 +113,7 @@ void MorseTree::printTree()
 
 void MorseTree::preOrderTransPrinter(int i,int depth)
 {
-	if(i > 64) return;
+	if(i > treeLength) return;
 	printNodeWSpaces(i,depth);
 	preOrderTransPrinter(leftChild(i),depth+1);
 	preOrderTransPrinter(rightChild(i),depth+1);
@@ -123,19 +123,19 @@ void MorseTree::printNodeWSpaces(int i,int depth)
 {
 	//The number of spaces to print before the node value.
 	int spaces = 4*depth; //print four times the nodes index in spaces before the value.
-		while(spaces > 0)
-		{
-			std::cout << ' ';
-			spaces--;
-		}
-		if(bTree[i] != 0)
-		{
-			std::cout << bTree[i] << '\n';
-		}
-		else
-		{
-			std::cout << "__" << '\n';
-		}
+	while(spaces > 0)
+	{
+		std::cout << ' ';
+		spaces--;
+	}
+	if(bTree[i] != 0)
+	{
+		std::cout << bTree[i] << '\n';
+	}
+	else
+	{
+		std::cout << "__" << '\n';
+	}
 }
 
 /* Print the btree nodes in order as they appear in the array.*/
@@ -168,28 +168,22 @@ void MorseTree::Ascii2Morse(char c,MorseStack &  morse)
 	std::cout << "Leaving Ascii2Morse\n"; //DEBUG
 }
 
-/*Perform a Pre-Order transversal of the tree to locate the array index of the specified char */
+/*Perform an inorder transversal of the tree array to locate the array index of the specified char */
 int MorseTree::findCharIndex(int i,char c)
 {
 	std::cout << "Entering findCharIndex\n"; //DEBUG
-	int foundIndex = 0; //the index located via the Pre-Order transversal, 0 if c not found.
-	if(i>treeLength) //then we have not found the character, return 0
+	int foundIndex = 0; //the index located via scanning the bTree array, 0 if c not found.
+	for(int j = i; j < treeLength; ++j)
 	{
-		return foundIndex; //foundIndex is 0 :(
-	}
-	if(bTree[i] == c) //we have found the index
-	{
-		foundIndex = i;
-	}
-	else
-	{
-		foundIndex = findCharIndex(leftChild(i),c);
-		if(foundIndex == 0) //we have to check the right side
+		if(bTree[j] == c) //we have found the index
 		{
-			foundIndex = findCharIndex(rightChild(i),c);
+			foundIndex = j;
+			break;
 		}
-	}	
+	}
 	std::cout << "Leaving findCharIndex\n"; //DEBUG
+
+	//if we have not found the character, return 0, or return the j value if found.
 	return foundIndex;
 }
 
@@ -197,21 +191,18 @@ int MorseTree::findCharIndex(int i,char c)
 void MorseTree::fillInParentString(int i,MorseStack & morse)
 {
 	std::cout << "Entering fillINParentString\n"; //DEBUG
-	if(i == 0) //then we have reached the root node and are done
+	while(i != 0) //else we have reached the root node and are done
 	{
-		std::cout << "Leaving fillInParentString early\n"; //DEBUG
-		return;
+		int parentIndex = parentOf(i);
+		if(i == leftChild(parentIndex)) //then place a '-' at the end of the string
+		{
+			morse.push('-');
+		}
+		else //otherwise it is a '.'
+		{
+			morse.push('.');
+		}
+		i = parentIndex; //move to the parent node.
 	}
-
-	int parentIndex = parentOf(i);
-	if(i == leftChild(parentIndex)) //then place a '-' at the end of the string
-	{
-		morse.push('-');
-	}
-	else //otherwise it is a '.'
-	{
-		morse.push('.');
-	}
-	fillInParentString(parentIndex,morse);
 	std::cout << "Leaving fillInParentString\n"; //DEBUG
 }
