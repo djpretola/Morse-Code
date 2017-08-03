@@ -18,6 +18,7 @@ int main()
 	//Print the tree structure
 	mt.printTree();
 	mt.printTreeArray();
+	mt.printTreeArrayHex();
 
 	//find the Morse Code for the letter q
 	mt.Ascii2Morse('q',ms);

@@ -11,6 +11,7 @@ Here we use an array to store the tree. Formulas for Transversing the tree:
 */
 
 #include <iostream>
+#include <cstdio>
 #include <memory.h>
 #include "MorseStack.h"
 #include "MorseTree.h"
@@ -21,7 +22,7 @@ MorseTree::MorseTree(char * bTree, int treeLength)
 	this->bTree = bTree;
 	this->treeLength = treeLength;
 	//Clear the bTree array
-	memset(&bTree,0,sizeof(bTree));
+	memset(bTree,0,treeLength);
 	
 	//Insert the characters and their associated codes
 	insert('a',".-");
@@ -93,13 +94,13 @@ int MorseTree::parentOf(int index)
 }
 
 /* Calculate the left child of the provided node index */
-int MorseTree::leftChild(int index)
+inline int MorseTree::leftChild(int index)
 {
 	return 2*index+1;
 }
 
 /* Calculate the right child of the provided node index */
-int MorseTree::rightChild(int index)
+inline int MorseTree::rightChild(int index)
 {
 	return 2*index+2;
 }
@@ -113,7 +114,7 @@ void MorseTree::printTree()
 
 void MorseTree::preOrderTransPrinter(int i,int depth)
 {
-	if(i > treeLength) return;
+	if(i > treeLength-1) return; //make sure we don't overrun the bTree array.
 	printNodeWSpaces(i,depth);
 	preOrderTransPrinter(leftChild(i),depth+1);
 	preOrderTransPrinter(rightChild(i),depth+1);
@@ -141,6 +142,7 @@ void MorseTree::printNodeWSpaces(int i,int depth)
 /* Print the btree nodes in order as they appear in the array.*/
 void MorseTree::printTreeArray()
 {
+	std::cout << '"';
 	for(int i=0;i<treeLength;++i)
 	{
 		if(bTree[i] != 0)
@@ -152,7 +154,7 @@ void MorseTree::printTreeArray()
 			std::cout << ' ';
 		}
 	}
-	std::cout << '\n';
+	std::cout << "\"\n";
 }
 
 /* Perform a Pre-Order transversal of the tree to find the specified character and then
@@ -205,4 +207,17 @@ void MorseTree::fillInParentString(int i,MorseStack & morse)
 		i = parentIndex; //move to the parent node.
 	}
 	std::cout << "Leaving fillInParentString\n"; //DEBUG
+}
+
+/* Print the btree nodes in order as they appear in the array in hex. */
+void MorseTree::printTreeArrayHex()
+{
+	std::cout << "{ ";
+	char delimiter = ','; //delimite each number by a comma.
+	for(int i=0;i<treeLength;++i)
+	{
+		if(i == treeLength - 1) delimiter = ' '; //make sure the last value has no comma.
+		std::printf("%#02x%c",bTree[i],delimiter); //it's a little easier in C.
+	}
+	std::cout << "};\n";
 }

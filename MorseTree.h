@@ -153,6 +153,17 @@ public:
 	void printTreeArray();
 	
 	/*
+	Print to STDIO the Morse bTree array in Hexadecimal.
+
+	Arguments:
+	none
+
+	Returns:
+	none
+	*/
+	void printTreeArrayHex();
+
+	/*
 	Convert the specified character to its specific morse code.
 	The contents of the specified stack are filled in with the code, pop each morse
 	signal and you have the full character morse code signal.
