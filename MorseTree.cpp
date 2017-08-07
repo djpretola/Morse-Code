@@ -114,10 +114,12 @@ void MorseTree::printTree()
 
 void MorseTree::preOrderTransPrinter(int i,int depth)
 {
-	if(i > treeLength-1) return; //make sure we don't overrun the bTree array.
-	printNodeWSpaces(i,depth);
-	preOrderTransPrinter(leftChild(i),depth+1);
-	preOrderTransPrinter(rightChild(i),depth+1);
+	if(i < treeLength) //make sure we don't overrun the bTree array.
+	{
+		printNodeWSpaces(i,depth);
+		preOrderTransPrinter(leftChild(i),depth+1);
+		preOrderTransPrinter(rightChild(i),depth+1);
+	}
 }
 
 void MorseTree::printNodeWSpaces(int i,int depth)	
