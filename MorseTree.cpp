@@ -76,6 +76,11 @@ void MorseTree::insert(const char c,const char * code)
 		{
 			index = rightChild(index);
 		}	
+		else
+		{
+			std::cout << "Invalid character in Morse Code: " << *code << '\n';
+			return; //abort the character insertion.
+		}
 		code++; //increment to the next character
 	}
 	//our current index is the location of the character in the tree
