@@ -14,15 +14,17 @@ Here we use an array to store the tree. Formulas for Transversing the tree:
 #include <cstdio>
 #include <memory.h>
 #include "MorseStack.h"
+#include "MorseTable.h"
 #include "MorseTree.h"
 
 /* Constructor */
-MorseTree::MorseTree(char * bTree, int treeLength)
+MorseTree::MorseTree(char * bTree, int treeLength, MorseTable * lookupTable)
 {
 	this->bTree = bTree;
 	this->treeLength = treeLength;
 	//Clear the bTree array
 	memset(bTree,0,treeLength);
+	this->lookupTable = lookupTable;
 	
 	//Insert the characters and their associated codes
 	insert('a',".-");
@@ -85,6 +87,9 @@ void MorseTree::insert(const char c,const char * code)
 	}
 	//our current index is the location of the character in the tree
 	bTree[index] = c;
+
+	//Insert the current index and the character into the lookup table.
+	lookupTable->put(c,index);
 }
 
 /* Calculate the parent index of the provided node index */
@@ -169,7 +174,7 @@ walk up the tree and return the morse code string for the specified character */
 void MorseTree::Ascii2Morse(char c,MorseStack &  morse)
 {
 	std::cout << "Entering Ascii2Morse\n"; //DEBUG
-	int index = findCharIndex(0,c);
+	int index = findCharIndex(c);
 	if(index != 0) //we have found the index! Walk back up and fill in the morse code str
 	{
 		fillInParentString(index,morse);
@@ -177,23 +182,19 @@ void MorseTree::Ascii2Morse(char c,MorseStack &  morse)
 	std::cout << "Leaving Ascii2Morse\n"; //DEBUG
 }
 
-/*Perform an inorder transversal of the tree array to locate the array index of the specified char */
-int MorseTree::findCharIndex(int i,char c)
+/*Use the lookup table or hashmap to locate the array index of the specified char */
+int MorseTree::findCharIndex(char c)
 {
-	std::cout << "Entering findCharIndex\n"; //DEBUG
-	int foundIndex = 0; //the index located via scanning the bTree array, 0 if c not found.
-	for(int j = i; j < treeLength; ++j)
+	int foundIndex; //the index located in the bTree array, 0 if c not found.
+	foundIndex = lookupTable->get(c);
+	if(foundIndex != -1)
 	{
-		if(bTree[j] == c) //we have found the index
-		{
-			foundIndex = j;
-			break;
-		}
+		return foundIndex;
 	}
-	std::cout << "Leaving findCharIndex\n"; //DEBUG
-
-	//if we have not found the character, return 0, or return the j value if found.
-	return foundIndex;
+	else
+	{
+		return 0;
+	}
 }
 
 /*Walk up the tree from the specified node index and fill in the string in reverse order. */

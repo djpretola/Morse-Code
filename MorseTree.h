@@ -1,3 +1,5 @@
+#ifndef _H_MORSETREE
+#define _H_MORSETREE
 /*
 A Binary Search tree implementation of Morse Code to ASCII and ASCII to Morse Code
 By David Pretola
@@ -9,6 +11,7 @@ Here we use an array to store the tree. Formulas for Transversing the tree:
 [2i+1] -> left child
 [2i+2] -> right child
 */
+#include "MorseTable.h"
 
 //Our MorseTree class
 
@@ -16,6 +19,8 @@ class MorseTree {
 private:
 	char * bTree; //array to hold the characters and numbers found in Morse Code plus root
 	int treeLength; //the length of the bTree array
+	MorseTable * lookupTable; /*A hash map to the location of the Morse Characters in the
+					bTree array. */	
 
 	/*
 	Helper function for preOrderTansPrinter, that prints the current node with
@@ -44,17 +49,14 @@ private:
 	void preOrderTransPrinter(int i,int depth);
 
 	/*
-	Perform a Pre-Order transversal of the tree to locate the array index of the specified 
-	char.
-
+	Use the lookup table or hashmap to locate the array index of the specified char. 
 	Arguments:
-	int i - The starting index in the bTree array.
 	char c - The character to locate.
 
 	Return:
 	int - The index of the specified character in the bTree array.
 	*/
-	int findCharIndex(int i,char c);
+	int findCharIndex(char c);
 
 	/*
 	Walk up the tree from the specified node index and fill in the string in reverse order,
@@ -128,7 +130,7 @@ public:
 	Returns
 	NA
 	*/
-	MorseTree(char * bTree,int treeLength);
+	MorseTree(char * bTree,int treeLength,MorseTable * lookupTable);
 
 	/*
 	Print to STDIO the Morse Tree ordered by tree depth per column.
@@ -177,3 +179,4 @@ public:
 	*/
 	void Ascii2Morse(char c,MorseStack & morse);
 };
+#endif

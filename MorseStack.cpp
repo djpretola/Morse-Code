@@ -1,3 +1,5 @@
+#ifndef _H_MORSESTACK
+#define MORSESTACK
 /*
 MorseStack class
 
@@ -46,3 +48,4 @@ void MorseStack::debugPrintStack()
 	}
 	std::cout << ' ' << top << '\n';
 }
+#endif
