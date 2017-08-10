@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdio>
 #include <memory.h>
 #include "MorseTable.h"
 
@@ -65,4 +66,17 @@ unsigned char MorseTable::get(char c)
 	{
 		return -1;
 	}
+}
+
+/* Print the array nodes in order as they appear in the array in hex. */
+void MorseTable::printTableArrayHex()
+{
+	std::cout << "{ ";
+	char delimiter = ','; //delimite each number by a comma.
+	for(int i=0;i<hashTableSize;++i)
+	{
+		if(i == hashTableSize - 1) delimiter = ' '; //make sure the last value has no comma.
+		std::printf("%#02x%c",hashTable[i],delimiter); //it's a little easier in C.
+	}
+	std::cout << "};\n";
 }

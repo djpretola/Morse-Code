@@ -71,5 +71,17 @@ public:
 			-1 will be returned if the character is invalid.
 	*/
 	unsigned char get(char c);
+
+	
+	/*
+	Print to STDIO the character hash table array in Hexadecimal.
+
+	Arguments:
+	none
+
+	Returns:
+	none
+	*/
+	void printTableArrayHex();
 };
 #endif

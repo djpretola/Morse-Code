@@ -25,6 +25,9 @@ int main()
 	mt.printTreeArray();
 	mt.printTreeArrayHex();
 
+	//Print the hash table
+	mlookup.printTableArrayHex();
+
 	//find the Morse Code for the letter q
 	mt.Ascii2Morse('q',ms);
 
