@@ -13,6 +13,11 @@ int main()
 	char stack[STACKSIZE];
 	char tree[TREELENGTH];	
 	char table[TABLESIZE];
+
+	// Clear the contents of the arrays
+	memset(stack,0,STACKSIZE);
+	memset(tree,0,TREELENGTH);
+	memset(table,0,TABLESIZE);
 	
 	MorseStack ms((char*)stack,STACKSIZE);
 

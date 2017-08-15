@@ -38,7 +38,7 @@ public:
 	Constructor
 
 	The constructor function for the MorseTable. The contents of the hashTable
-	array is cleared.
+	array is not cleared.
 
 	Arguments:
 	char * hashTable - Pointer to the array to store the table in.

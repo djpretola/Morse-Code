@@ -121,7 +121,7 @@ public:
 	Constructor
 
 	Initalize an empty tree with the provided array and size of the array.
-	The constructor will clear the contents of the array.
+	The constructor will not clear the contents of the array.
 
 	Arguments:
 	char * bTree - Pointer to the start of the array bTree.

@@ -9,7 +9,6 @@ MorseTable::MorseTable(char * hashTable, int hashTableSize)
 {
 	this->hashTable = hashTable;
 	this->hashTableSize = hashTableSize;
-	memset(hashTable,0,hashTableSize); //clear the hashTable array.
 }
 
 void MorseTable::put(char c, unsigned char value)

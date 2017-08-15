@@ -15,7 +15,7 @@ public:
 	Constructor 
 
 	Initalize an empty stack with the provided array and size of the array.
-	The constructor will clear the contents of the array.
+	The constructor will not clear the contents of the array.
 
 	Arguments
 	char * stack - Pointer to the start of the array stack.

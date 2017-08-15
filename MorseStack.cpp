@@ -19,7 +19,6 @@ MorseStack::MorseStack(char * stack, int stackSize)
 	this->stack = stack;
 	this->stackSize = stackSize;
 	top = 0; //set the top of the stack
-	memset(stack,0,stackSize); //Clear the contents of the stack.
 }
 
 void MorseStack::push(char c)

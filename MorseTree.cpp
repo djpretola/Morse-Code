@@ -22,8 +22,6 @@ MorseTree::MorseTree(char * bTree, int treeLength, MorseTable * lookupTable)
 {
 	this->bTree = bTree;
 	this->treeLength = treeLength;
-	//Clear the bTree array
-	memset(bTree,0,treeLength);
 	this->lookupTable = lookupTable;
 	
 	//Insert the characters and their associated codes
