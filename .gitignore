@@ -1,6 +1,7 @@
 .*
 *.o
 morse
+morse_ro
 CMakeCache.txt
 CMakeFiles/
 cmake*

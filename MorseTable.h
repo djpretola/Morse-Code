@@ -58,7 +58,7 @@ public:
 	unsigned char value - The value to store under the character in the hash table.
 	*/
 
-	void put(char c,unsigned char value);
+	virtual void put(char c,unsigned char value);
 
 	/*
 	Retrieve the value from the hash table for the specified character.

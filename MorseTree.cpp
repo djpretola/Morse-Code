@@ -189,3 +189,9 @@ void MorseTree::printTreeArrayHex()
 	}
 	std::cout << "};\n";
 }
+
+/**
+The Read Only MorseTreeRO functions
+**/
+MorseTreeRO::MorseTreeRO(char * bTree, int treeLength, MorseTable * lookupTable) : MorseTree(bTree,treeLength,lookupTable) {} 
+void MorseTreeRO::insert(const char c,const char * code) {}

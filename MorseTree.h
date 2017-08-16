@@ -180,4 +180,13 @@ public:
 	virtual void insert(const char c,const char * code);
 
 };
+
+/* Our Read Only MorseTree Class */
+class MorseTreeRO : public MorseTree
+{
+public:
+	MorseTreeRO(char * bTree,int treeLength,MorseTable * lookupTable); 
+private:
+	void insert(const char c,const char * code); //make insert private, remember Read-Only!
+};
 #endif
