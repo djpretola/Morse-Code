@@ -72,16 +72,6 @@ private:
 	void fillInParentString(int i,MorseStack & morse);
 
 	/*
-	Insert the specified character with the specified morse code into the tree.
-
-	Arguments:
-	char c - The character to store.
-	char * code - A pointer to the morse code string. Only '-' and '.' are valid character
-	values.
-	*/
-	void insert(const char c,const char * code);
-
-	/*
 	Calculate the parent index of the specified index in bTree.
 	Calculation: [(i-1)/2] = parent node
 
@@ -178,5 +168,16 @@ public:
 	none
 	*/
 	void Ascii2Morse(char c,MorseStack & morse);
+
+	/*
+	Insert the specified character with the specified morse code into the tree.
+
+	Arguments:
+	char c - The character to store.
+	char * code - A pointer to the morse code string. Only '-' and '.' are valid character
+	values.
+	*/
+	virtual void insert(const char c,const char * code);
+
 };
 #endif

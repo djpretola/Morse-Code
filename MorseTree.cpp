@@ -23,44 +23,6 @@ MorseTree::MorseTree(char * bTree, int treeLength, MorseTable * lookupTable)
 	this->bTree = bTree;
 	this->treeLength = treeLength;
 	this->lookupTable = lookupTable;
-	
-	//Insert the characters and their associated codes
-	insert('a',".-");
-	insert('b',"-...");
-	insert('c',"-.-.");
-	insert('d',"-..");
-	insert('e',".");
-	insert('f',"..-.");
-	insert('g',"--.");
-	insert('h',"....");
-	insert('i',"..");
-	insert('j',".---");
-	insert('k',"-.-");
-	insert('l',".-..");
-	insert('m',"--");
-	insert('n',"-.");
-	insert('o',"---");
-	insert('p',".--.");
-	insert('q',"--.-");
-	insert('r',".-.");
-	insert('s',"...");
-	insert('t',"-");
-	insert('u',"..-");
-	insert('v',"...-");
-	insert('w',".--");
-	insert('x',"-..-");
-	insert('y',"-.--");
-	insert('z',"--..");
-	insert('1',".----");
-	insert('2',"..---");
-	insert('3',"...--");
-	insert('4',"....-");
-	insert('5',".....");
-	insert('6',"-....");
-	insert('7',"--...");
-	insert('8',"---..");
-	insert('9',"----.");
-	insert('0',"-----");
 }
 
 /* insert the specified character, c, into MorseTree under the specified code */
