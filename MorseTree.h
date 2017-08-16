@@ -170,6 +170,19 @@ public:
 	void Ascii2Morse(char c,MorseStack & morse);
 
 	/*
+	Convert the morse code string in the specified stack into the proper character.
+	The contents of the specified stack are removed as the tree is walked to find
+	the coded character.
+
+	Arguments:
+	MorseStack & morse - A reference to the stack containing the Morse Code string.
+
+	Returns:
+	char - The coded character.
+	*/
+	char Morse2Ascii(MorseStack &  morse);
+
+	/*
 	Insert the specified character with the specified morse code into the tree.
 
 	Arguments:

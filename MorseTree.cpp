@@ -129,17 +129,15 @@ void MorseTree::printTreeArray()
 	std::cout << "\"\n";
 }
 
-/* Perform a Pre-Order transversal of the tree to find the specified character and then
+/* Perform a look up on the specified character's tree node and then
 walk up the tree and return the morse code string for the specified character */
 void MorseTree::Ascii2Morse(char c,MorseStack &  morse)
 {
-	std::cout << "Entering Ascii2Morse\n"; //DEBUG
 	int index = findCharIndex(c);
 	if(index != 0) //we have found the index! Walk back up and fill in the morse code str
 	{
 		fillInParentString(index,morse);
 	}
-	std::cout << "Leaving Ascii2Morse\n"; //DEBUG
 }
 
 /*Use the lookup table or hashmap to locate the array index of the specified char */
@@ -160,7 +158,6 @@ int MorseTree::findCharIndex(char c)
 /*Walk up the tree from the specified node index and fill in the string in reverse order. */
 void MorseTree::fillInParentString(int i,MorseStack & morse)
 {
-	std::cout << "Entering fillINParentString\n"; //DEBUG
 	while(i != 0) //else we have reached the root node and are done
 	{
 		int parentIndex = parentOf(i);
@@ -174,7 +171,34 @@ void MorseTree::fillInParentString(int i,MorseStack & morse)
 		}
 		i = parentIndex; //move to the parent node.
 	}
-	std::cout << "Leaving fillInParentString\n"; //DEBUG
+}
+
+
+/* Walk down the tree from the root node with the specified Morse Code String and return the 
+character located */
+char MorseTree::Morse2Ascii(MorseStack &  morse)
+{
+	int index = 0; //the current node location in MorseTree[]
+	char direction; //the current direction to take from the current node.
+	do
+	{
+		direction = morse.pop();
+		if(direction == '-') //then go left 
+		{
+			index = leftChild(index);
+		}
+		else if(direction == '.') //then go right
+		{
+			index = rightChild(index);
+		}	
+		else if(direction != 0) //then error
+		{
+			std::cout << "Invalid character in Morse Code: " << direction << '\n';
+			return 0; //abort the character insertion.
+		}
+	}while(direction != 0); 
+	
+	return bTree[index];
 }
 
 /* Print the btree nodes in order as they appear in the array in hex. */
@@ -193,5 +217,11 @@ void MorseTree::printTreeArrayHex()
 /**
 The Read Only MorseTreeRO functions
 **/
-MorseTreeRO::MorseTreeRO(char * bTree, int treeLength, MorseTable * lookupTable) : MorseTree(bTree,treeLength,lookupTable) {} 
-void MorseTreeRO::insert(const char c,const char * code) {}
+
+/* Our Constructor that passes through to the MorseTree constructor */
+MorseTreeRO::MorseTreeRO(char * bTree, int treeLength, MorseTable * lookupTable) : MorseTree(bTree,treeLength,lookupTable)
+{} 
+
+/* Implement the insert function that is now private */
+void MorseTreeRO::insert(const char c,const char * code)
+{}
