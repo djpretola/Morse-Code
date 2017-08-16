@@ -14,11 +14,11 @@ representing '.' and '-' for morse code.
 //Our MorseStack class
 
 //Our Constructor
-MorseStack::MorseStack(char * stack, int stackSize)
+MorseStack::MorseStack(char * stack, int stackSize,int top)
 {
 	this->stack = stack;
 	this->stackSize = stackSize;
-	top = 0; //set the top of the stack
+	this->top = top; //note the default value.
 }
 
 void MorseStack::push(char c)

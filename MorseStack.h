@@ -20,11 +20,12 @@ public:
 	Arguments
 	char * stack - Pointer to the start of the array stack.
 	int stackSize - The size of the *stack array.
+	int top - The initial location of the stack top in the stack array. Default to 0.
 
 	Returns
 	NA
 	*/
-	MorseStack(char * stack, int stackSize);
+	MorseStack(char * stack, int stackSize, int top = 0);
 
 	/*
 	Push a single character into the stack.
