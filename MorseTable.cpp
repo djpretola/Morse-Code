@@ -40,13 +40,49 @@ int - The hash key 0 - 35, for the valid Morse Code characters. -1 for invalid c
 
 int MorseTable::computeHash(char c)
 {
-	if((c >= 'a') && (c <= 'z'))
+	if(((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')))
 	{
 		return c - 'a'; //The first 26 entries are for the characters.
 	}
 	else if((c >= '0') && (c <= '9'))
 	{
 		return c - '0' + 26; //Place the numbers in the last porition of the table.
+	}
+	else if((c >= 0x27) && (c <= '/'))
+	{
+		return c - 0x27 + 37; //Place ' ( ) * + , - . / after the numbers in the table.
+	}
+	else if((c >= END_OF_WORK) && (c <= UNDERSTOOD))
+	{
+		return c - END_OF_WORK + 46; //Place END_OF_WORK INV_TO_TRANS UNDERSTOOD
+	}
+	else if((c == ERROR) || (c == WAIT))
+	{
+		return c - ERROR + 49; //Place ERROR WAIT
+	}
+	else if(c == STARTING_SIGNAL)
+	{
+		return 51; //Place STARTING_SIGNAL
+	}
+	else if(c == '"')
+	{
+		return 52; //Place quotation
+	}
+	else if(c == ':')
+	{
+		return 53; //Place colon
+	}
+	else if(c == '=')
+	{
+		return 54; //Place double hyphon
+	}
+	else if(c == '?')
+	{
+		return 55; //Place question
+	}
+	else if(c == '@')
+	{
+		return 56; //Place commerical at "@"
 	}
 	else //we have an invalid character
 	{

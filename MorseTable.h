@@ -1,5 +1,15 @@
 #ifndef _H_MORSETABLE
 #define _H_MORSETABLE
+
+/* Define our non-printable ASCII characters and Multiplication for Int Morse Code */
+#define STARTING_SIGNAL 0x02
+#define END_OF_WORK 0x04
+#define INV_TO_TRANS 'k'
+#define UNDERSTOOD 0x06
+#define ERROR 0x15
+#define WAIT 0x16
+#define MULT 'x'
+
 /*
 A Hash table to aide in the look up of characters for Morse Code encoding.
 Each key will be a valid Morse Code character.

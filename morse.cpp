@@ -4,9 +4,9 @@
 #include "MorseTree.h"
 #include "MorseTable.h"
 
-#define STACKSIZE 5
-#define TREELENGTH 64
-#define TABLESIZE 36
+#define STACKSIZE 8
+#define TREELENGTH 256
+#define TABLESIZE 57
 
 int main()
 {
@@ -63,6 +63,26 @@ int main()
 	mt.insert('8',"---..");
 	mt.insert('9',"----.");
 	mt.insert('0',"-----");
+	mt.insert(STARTING_SIGNAL,"-.-.-");
+	mt.insert(END_OF_WORK,"...-.-");
+	mt.insert(INV_TO_TRANS,"-.-"); //INV_TO_TRANS is identical to the character k.
+	mt.insert(UNDERSTOOD,"...-.");
+	mt.insert(ERROR,"........");
+	mt.insert(WAIT,".-...");
+	mt.insert(MULT,"-..-"); //MULT is identical to the character x.
+	mt.insert('"',".-..-.");
+	mt.insert(0x27,".----."); // ' Apostrophe character
+	mt.insert('(',"-.--.");
+	mt.insert(')',"-.--.-");
+	mt.insert('+',".-.-.");
+	mt.insert(',',"--..--");
+	mt.insert('-',"-....-");
+	mt.insert('.',".-.-.-");
+	mt.insert('/',"-..-.");
+	mt.insert(':',"---...");
+	mt.insert('=',"-...-");
+	mt.insert('?',"..--..");
+	mt.insert('@',".--.-.");
 
 	//Print the tree structure
 	mt.printTree();

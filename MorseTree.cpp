@@ -30,11 +30,11 @@ void MorseTree::insert(const char c,const char * code)
 {
 	int index = 0; //the current node location in MorseTree[]
 	while(*code != 0) {
-		if(*code == '-') //then go left 
+		if(*code == '.') //then go left 
 		{
 			index = leftChild(index);
 		}
-		else if(*code == '.') //then go right
+		else if(*code == '-') //then go right
 		{
 			index = rightChild(index);
 		}	
@@ -103,7 +103,7 @@ void MorseTree::printNodeWSpaces(int i,int depth)
 	}
 	if(bTree[i] != 0)
 	{
-		std::cout << bTree[i] << '\n';
+		std::printf("%#02x\n",bTree[i]); //it's a little easier in C.
 	}
 	else
 	{
@@ -161,13 +161,13 @@ void MorseTree::fillInParentString(int i,MorseStack & morse)
 	while(i != 0) //else we have reached the root node and are done
 	{
 		int parentIndex = parentOf(i);
-		if(i == leftChild(parentIndex)) //then place a '-' at the end of the string
-		{
-			morse.push('-');
-		}
-		else //otherwise it is a '.'
+		if(i == leftChild(parentIndex)) //then place a '.' at the end of the string
 		{
 			morse.push('.');
+		}
+		else //otherwise it is a '-'
+		{
+			morse.push('-');
 		}
 		i = parentIndex; //move to the parent node.
 	}
@@ -183,11 +183,11 @@ char MorseTree::Morse2Ascii(MorseStack &  morse)
 	do
 	{
 		direction = morse.pop();
-		if(direction == '-') //then go left 
+		if(direction == '.') //then go left 
 		{
 			index = leftChild(index);
 		}
-		else if(direction == '.') //then go right
+		else if(direction == '-') //then go right
 		{
 			index = rightChild(index);
 		}	
