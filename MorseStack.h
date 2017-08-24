@@ -1,14 +1,20 @@
+#ifndef _H_MORSESTACK
+#define _H_MORSESTACK
+
+/* Define a default stack size */
+#define STACKSIZE 8
+
 /*
 MorseStack class
 
-An implementation of a Stack data structure that contains chars 
+An implementation of a Stack data structure that contains unsigned chars 
 representing '.' and '-' for morse code.
 */
 
 class MorseStack {
 private:
 	int stackSize; /* The size of the stack. */
-	char * stack; /* Pointer to the provided array to serve as the stack. */
+	unsigned char * stack; /* Pointer to the provided array to serve as the stack. */
 	int top; /* The index to the current top of the stack. */
 public:
 	/*
@@ -18,14 +24,14 @@ public:
 	The constructor will not clear the contents of the array.
 
 	Arguments
-	char * stack - Pointer to the start of the array stack.
+	unsigned char * stack - Pointer to the start of the array stack.
 	int stackSize - The size of the *stack array.
 	int top - The initial location of the stack top in the stack array. Default to 0.
 
 	Returns
 	NA
 	*/
-	MorseStack(char * stack, int stackSize, int top = 0);
+	MorseStack(unsigned char * stack, int stackSize, int top = 0);
 
 	/*
 	Push a single character into the stack.
@@ -33,12 +39,12 @@ public:
 	Places a character on the top of the stack.
 
 	Arguments
-	char c - The character to push.
+	unsigned char c - The character to push.
 
 	Returns
 	none 
 	*/	
-	void push(char c);
+	void push(unsigned char c);
 
 	/*
 	Pop the first character off the stack.
@@ -49,9 +55,9 @@ public:
 	none
 
 	Returns
-	char - The character from the top.
+	unsigned char - The character from the top.
 	*/
-	char pop();
+	unsigned char pop();
 
 	/*
 	Print to STDIO the stack array characters and the current index of the top.
@@ -64,3 +70,4 @@ public:
 	*/
 	void debugPrintStack();
 };
+#endif

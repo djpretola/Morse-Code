@@ -4,26 +4,22 @@
 #include "MorseTree.h"
 #include "MorseTable.h"
 
-#define STACKSIZE 8
-#define TREELENGTH 256
-#define TABLESIZE 57
-
 int main()
 {
-	char stack[STACKSIZE];
-	char tree[TREELENGTH];	
-	char table[TABLESIZE];
+	unsigned char stack[STACKSIZE];
+	unsigned char tree[TREELENGTH];	
+	unsigned char table[TABLESIZE];
 
 	// Clear the contents of the arrays
 	memset(stack,0,STACKSIZE);
 	memset(tree,0,TREELENGTH);
 	memset(table,0,TABLESIZE);
 	
-	MorseStack ms((char*)stack,STACKSIZE);
+	MorseStack ms((unsigned char*)stack,STACKSIZE);
 
-	MorseTable mlookup((char*)table,TABLESIZE);
+	MorseTable mlookup((unsigned char*)table,TABLESIZE);
 
-	MorseTree mt((char*)tree,TREELENGTH,&mlookup);
+	MorseTree mt((unsigned char*)tree,TREELENGTH,&mlookup);
 
 	
 	//Insert the characters and their associated codes
@@ -97,7 +93,7 @@ int main()
 
 	//Display the code for the letter q.
 	std::cout << "Morse Code for Q: ";
-	char c;
+	unsigned char c;
 	do
 	{
 		c = ms.pop();

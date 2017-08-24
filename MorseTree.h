@@ -1,5 +1,12 @@
 #ifndef _H_MORSETREE
 #define _H_MORSETREE
+
+/* Define the default tree size */
+#define TREELENGTH 256
+
+/* Define our error codes */
+#define MORSETREE_INVALID_INDEX 0 //The root node is invalid 
+
 /*
 A Binary Search tree implementation of Morse Code to ASCII and ASCII to Morse Code
 By David Pretola
@@ -17,7 +24,7 @@ Here we use an array to store the tree. Formulas for Transversing the tree:
 
 class MorseTree {
 private:
-	char * bTree; //array to hold the characters and numbers found in Morse Code plus root
+	unsigned char * bTree; //array to hold the characters and numbers found in Morse Code plus root
 	int treeLength; //the length of the bTree array
 	MorseTable * lookupTable; /*A hash map to the location of the Morse Characters in the
 					bTree array. */	
@@ -49,14 +56,14 @@ private:
 	void preOrderTransPrinter(int i,int depth);
 
 	/*
-	Use the lookup table or hashmap to locate the array index of the specified char. 
+	Use the lookup table or hashmap to locate the array index of the specified char.
 	Arguments:
-	char c - The character to locate.
+	unsigned char c - The character to locate.
 
 	Return:
-	int - The index of the specified character in the bTree array.
+	int - The index of the specified unsigned char*acter in the bTree array.
 	*/
-	int findCharIndex(char c);
+	int findCharIndex(unsigned char c);
 
 	/*
 	Walk up the tree from the specified node index and fill in the string in reverse order,
@@ -114,13 +121,13 @@ public:
 	The constructor will not clear the contents of the array.
 
 	Arguments:
-	char * bTree - Pointer to the start of the array bTree.
+	unsigned char * bTree - Pointer to the start of the array bTree.
 	int treeLength - The size of the *bTree array.
 
 	Returns
 	NA
 	*/
-	MorseTree(char * bTree,int treeLength,MorseTable * lookupTable);
+	MorseTree(unsigned char * bTree,int treeLength,MorseTable * lookupTable);
 
 	/*
 	Print to STDIO the Morse Tree ordered by tree depth per column.
@@ -161,13 +168,13 @@ public:
 	signal and you have the full character morse code signal.
 
 	Arguments:
-	char c - The character to convert to morse code.
+	unsigned char c - The character to convert to morse code.
 	morseStack & morse - Reference to the MorseStack to store the morse code.
 
 	Returns:
 	none
 	*/
-	void Ascii2Morse(char c,MorseStack & morse);
+	void Ascii2Morse(unsigned char c,MorseStack & morse);
 
 	/*
 	Convert the morse code string in the specified stack into the proper character.
@@ -178,19 +185,19 @@ public:
 	MorseStack & morse - A reference to the stack containing the Morse Code string.
 
 	Returns:
-	char - The coded character.
+	unsigned char - The coded character.
 	*/
-	char Morse2Ascii(MorseStack &  morse);
+	unsigned char Morse2Ascii(MorseStack &  morse);
 
 	/*
 	Insert the specified character with the specified morse code into the tree.
 
 	Arguments:
-	char c - The character to store.
+	unsigned char c - The character to store.
 	char * code - A pointer to the morse code string. Only '-' and '.' are valid character
 	values.
 	*/
-	virtual void insert(const char c,const char * code);
+	virtual void insert(unsigned char c,const char * code);
 
 };
 
@@ -198,8 +205,8 @@ public:
 class MorseTreeRO : public MorseTree
 {
 public:
-	MorseTreeRO(char * bTree,int treeLength,MorseTable * lookupTable); 
+	MorseTreeRO(unsigned char * bTree,int treeLength,MorseTable * lookupTable); 
 private:
-	void insert(const char c,const char * code); //make insert private, remember Read-Only!
+	void insert(unsigned char c,const char * code); //make insert private, remember Read-Only!
 };
 #endif

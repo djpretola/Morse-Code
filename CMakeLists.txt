@@ -26,6 +26,9 @@ add_executable (morse morse.cpp ${${PROJECT_NAME}_headers} ${${PROJECT_NAME}_sou
 #Create the morse_ro executable
 add_executable (morse_ro  morse_ro.cpp ${${PROJECT_NAME}_headers} ${${PROJECT_NAME}_sources})
 
+#Create the morse_generate executable
+add_executable (morse_generate morse_generate.cpp ${${PROJECT_NAME}_headers} ${${PROJECT_NAME}_sources})
+
 #Configure install to place the executable in a local bin directory.
 set (CMAKE_INSTALL_PREFIX ".")
 install(TARGETS ${PROJECT_NAME} 

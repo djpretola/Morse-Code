@@ -5,16 +5,16 @@
 
 //The Constructor
 
-MorseTable::MorseTable(char * hashTable, int hashTableSize)
+MorseTable::MorseTable(unsigned char * hashTable, int hashTableSize)
 {
 	this->hashTable = hashTable;
 	this->hashTableSize = hashTableSize;
 }
 
-void MorseTable::put(char c, unsigned char value)
+void MorseTable::put(unsigned char c, unsigned char value)
 {
 	int hash = computeHash(c);
-	if(hash != -1) //insert the value at the position hash
+	if(hash != MORSETABLE_INVALID_HASH) //insert the value at the position hash
 	{
 		hashTable[hash] = value;
 	}
@@ -32,15 +32,15 @@ if(c >= 'a' && c <= 'z') then hash = c - 61
 if(c >= 48 && c <= 57) then hash = c - 48 + 26
 
 Arguments:
-char c - The character to calculate the hash function for.
+unsigned char c - The character to calculate the hash function for.
 
 Returns:
-int - The hash key 0 - 35, for the valid Morse Code characters. -1 for invalid characters.
+int - The hash key 0 - 35, for the valid Morse Code characters. MORSETABLE_INVALID_HASH for invalid characters.
 */
 
-int MorseTable::computeHash(char c)
+int MorseTable::computeHash(unsigned char c)
 {
-	if(((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')))
+	if(((c >= 'a') && (c <= 'z')))
 	{
 		return c - 'a'; //The first 26 entries are for the characters.
 	}
@@ -50,56 +50,56 @@ int MorseTable::computeHash(char c)
 	}
 	else if((c >= 0x27) && (c <= '/'))
 	{
-		return c - 0x27 + 37; //Place ' ( ) * + , - . / after the numbers in the table.
+		return c - 0x27 + 36; //Place ' ( ) * + , - . / after the numbers in the table.
 	}
 	else if((c >= END_OF_WORK) && (c <= UNDERSTOOD))
 	{
-		return c - END_OF_WORK + 46; //Place END_OF_WORK INV_TO_TRANS UNDERSTOOD
+		return c - END_OF_WORK + 45; //Place END_OF_WORK INV_TO_TRANS UNDERSTOOD
 	}
 	else if((c == ERROR) || (c == WAIT))
 	{
-		return c - ERROR + 49; //Place ERROR WAIT
+		return c - ERROR + 48; //Place ERROR WAIT
 	}
 	else if(c == STARTING_SIGNAL)
 	{
-		return 51; //Place STARTING_SIGNAL
+		return 50; //Place STARTING_SIGNAL
 	}
 	else if(c == '"')
 	{
-		return 52; //Place quotation
+		return 51; //Place quotation
 	}
 	else if(c == ':')
 	{
-		return 53; //Place colon
+		return 52; //Place colon
 	}
 	else if(c == '=')
 	{
-		return 54; //Place double hyphon
+		return 53; //Place double hyphon
 	}
 	else if(c == '?')
 	{
-		return 55; //Place question
+		return 54; //Place question
 	}
 	else if(c == '@')
 	{
-		return 56; //Place commerical at "@"
+		return 55; //Place commerical at "@"
 	}
 	else //we have an invalid character
 	{
-		return -1;
+		return MORSETABLE_INVALID_HASH;
 	}
 }
 
-unsigned char MorseTable::get(char c)
+unsigned char MorseTable::get(unsigned char c)
 {
 	int hash = computeHash(c);
-	if(c != -1) //retreive the value
+	if(hash != MORSETABLE_INVALID_HASH) //retreive the value
 	{
 		return hashTable[hash];
 	}
-	else //return -1 for error
+	else //return MORSETABLE_INVALID_HASH for error
 	{
-		return -1;
+		return MORSETABLE_INVALID_HASH;
 	}
 }
 
@@ -107,7 +107,7 @@ unsigned char MorseTable::get(char c)
 void MorseTable::printTableArrayHex()
 {
 	std::cout << "{ ";
-	char delimiter = ','; //delimite each number by a comma.
+	unsigned char delimiter = ','; //delimite each number by a comma.
 	for(int i=0;i<hashTableSize;++i)
 	{
 		if(i == hashTableSize - 1) delimiter = ' '; //make sure the last value has no comma.
