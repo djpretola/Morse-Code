@@ -4,11 +4,11 @@
 MorseStack class
 
 An implementation of a Stack data structure that contains chars 
-representing '.' and '-' for morse code.
+representing '.' and '-' for morse code. And 'l' and 'w' for letter
+and word timing.
 */
 
 #include <iostream>
-#include <memory.h>
 #include "MorseStack.h"
 
 //Our MorseStack class
