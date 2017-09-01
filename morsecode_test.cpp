@@ -21,7 +21,7 @@ int main()
 	MorseStack quoteStack(quote,quoteSize,quoteSize); //stack to store the ASCII quote above.
 	MorseStack morseStack(buffer1,quoteSize*4);//stack to store the Morse Code
 	MorseStack asciiStack(buffer2,quoteSize); //stack to store the final conversion into.
-	MorseStack reverseStack(buffer3,quoteSize*4); //a debug buffer for stack reversal.
+	//MorseStack reverseStack(buffer3,quoteSize*4); //a debug buffer for stack reversal.
 
 	MorseCode morse;
 
@@ -29,15 +29,10 @@ int main()
 	morse.Ascii2Morse(quoteStack,morseStack);
 	
 	//Reverse the stack
-	unsigned char c;
-	do
-	{
-		c = morseStack.pop();
-		if(c != 0) reverseStack.push(c);
-	}while(c != 0);
-	
+	morseStack.reverse();
+
 	//Now convert the Morse Code back to ASCII
-	morse.Morse2Ascii(reverseStack,asciiStack);
+	morse.Morse2Ascii(morseStack,asciiStack);
 
 	//Print the ASCII stack and compare with the origional quote[] above
 	unsigned char d;

@@ -47,4 +47,16 @@ void MorseStack::debugPrintStack()
 	}
 	std::cout << ' ' << top << '\n';
 }
+
+void MorseStack::reverse()
+{
+	//Swap the contents of the stack around.
+	unsigned char c; //current character being swapped.
+	for(int i=0,j=top-1; i < top/2 && j > top/2 ;++i,--j)
+	{
+		c = stack[i];
+		stack[i] = stack[j];
+		stack[j] = c;
+	}
+}
 #endif

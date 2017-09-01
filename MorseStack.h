@@ -69,5 +69,16 @@ public:
 	none
 	*/
 	void debugPrintStack();
+
+	/*
+	Reverse the contents of the stack from the bottom to the top.
+
+	Arguments
+	none
+
+	Returns
+	none
+	*/
+	void reverse();
 };
 #endif
