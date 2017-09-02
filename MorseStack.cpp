@@ -7,8 +7,9 @@ An implementation of a Stack data structure that contains chars
 representing '.' and '-' for morse code. And 'l' and 'w' for letter
 and word timing.
 */
-
+#ifndef _H_ARDUINO
 #include <iostream>
+#endif
 #include "MorseStack.h"
 
 //Our MorseStack class
@@ -41,11 +42,13 @@ unsigned char MorseStack::pop()
 
 void MorseStack::debugPrintStack()
 {
+#ifndef _H_ARDUINO
 	for(int i=0;i<stackSize;++i)
 	{
 		std::cout << stack[i];
 	}
 	std::cout << ' ' << top << '\n';
+#endif
 }
 
 void MorseStack::reverse()

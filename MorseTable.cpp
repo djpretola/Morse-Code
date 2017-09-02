@@ -1,6 +1,8 @@
+#ifndef _H_ARDUINO
 #include <iostream>
 #include <cstdio>
 #include <memory.h>
+#endif
 #include "MorseTable.h"
 
 //The Constructor
@@ -20,7 +22,9 @@ void MorseTable::put(unsigned char c, unsigned char value)
 	}
 	else //display an error
 	{
+#ifndef _H_ARDUINO
 		std::cout << "Invalid character value: " << c << '\n';
+#endif
 	}
 }
 
@@ -106,6 +110,7 @@ unsigned char MorseTable::get(unsigned char c)
 /* Print the array nodes in order as they appear in the array in hex. */
 void MorseTable::printTableArrayHex()
 {
+#ifndef _H_ARDUINO
 	std::cout << "{ ";
 	unsigned char delimiter = ','; //delimite each number by a comma.
 	for(int i=0;i<hashTableSize;++i)
@@ -114,4 +119,5 @@ void MorseTable::printTableArrayHex()
 		std::printf("%#02x%c",hashTable[i],delimiter); //it's a little easier in C.
 	}
 	std::cout << "};\n";
+#endif
 }

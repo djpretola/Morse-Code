@@ -9,10 +9,11 @@ Here we use an array to store the tree. Formulas for Transversing the tree:
 [2i+1] -> left child
 [2i+2] -> right child
 */
-
+#ifndef _H_ARDUINO
 #include <iostream>
 #include <cstdio>
 #include <memory.h>
+#endif
 #include "MorseStack.h"
 #include "MorseTable.h"
 #include "MorseTree.h"
@@ -40,7 +41,9 @@ void MorseTree::insert(unsigned char c,const char * code)
 		}	
 		else
 		{
+#ifndef _H_ARDUINO 
 			std::cout << "Invalid character in Morse Code: " << *code << '\n';
+#endif
 			return; //abort the character insertion.
 		}
 		code++; //increment to the next character
@@ -94,6 +97,7 @@ void MorseTree::preOrderTransPrinter(int i,int depth)
 
 void MorseTree::printNodeWSpaces(int i,int depth)	
 {
+#ifndef _H_ARDUINO
 	//The number of spaces to print before the node value.
 	int spaces = 4*depth; //print four times the nodes index in spaces before the value.
 	while(spaces > 0)
@@ -109,11 +113,13 @@ void MorseTree::printNodeWSpaces(int i,int depth)
 	{
 		std::cout << "__" << '\n';
 	}
+#endif
 }
 
 /* Print the btree nodes in order as they appear in the array.*/
 void MorseTree::printTreeArray()
 {
+#ifndef _H_ARDUINO
 	std::cout << '"';
 	for(int i=0;i<treeLength;++i)
 	{
@@ -127,6 +133,7 @@ void MorseTree::printTreeArray()
 		}
 	}
 	std::cout << "\"\n";
+#endif
 }
 
 /* Perform a look up on the specified character's tree node and then
@@ -193,7 +200,9 @@ unsigned char MorseTree::Morse2Ascii(MorseStack &  morse)
 		}	
 		else if(direction != 0) //then error
 		{
+#ifndef _H_ARDUINO
 			std::cout << "Invalid character in Morse Code: " << direction << '\n';
+#endif
 			return 0; //abort the character insertion.
 		}
 	}while(direction != 0); 
@@ -204,6 +213,7 @@ unsigned char MorseTree::Morse2Ascii(MorseStack &  morse)
 /* Print the btree nodes in order as they appear in the array in hex. */
 void MorseTree::printTreeArrayHex()
 {
+#ifndef _H_ARDUINO
 	std::cout << "{ ";
 	unsigned char delimiter = ','; //delimite each number by a comma.
 	for(int i=0;i<treeLength;++i)
@@ -212,6 +222,7 @@ void MorseTree::printTreeArrayHex()
 		std::printf("%#02x%c",bTree[i],delimiter); //it's a little easier in C.
 	}
 	std::cout << "};\n";
+#endif
 }
 
 /**
