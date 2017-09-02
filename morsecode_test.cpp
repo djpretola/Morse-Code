@@ -16,14 +16,11 @@ int main()
 	unsigned int quoteSize = quoteString.length();
 	unsigned char buffer1[quoteSize*4];//increase the size of the buffer for the Morse Code
 	unsigned char buffer2[quoteSize]; //buffer to decode the Morse Code into to compare with quote.
-	unsigned char buffer3[quoteSize*4]; //a debug buffer
-
 	MorseStack quoteStack(quote,quoteSize,quoteSize); //stack to store the ASCII quote above.
 	MorseStack morseStack(buffer1,quoteSize*4);//stack to store the Morse Code
 	MorseStack asciiStack(buffer2,quoteSize); //stack to store the final conversion into.
-	//MorseStack reverseStack(buffer3,quoteSize*4); //a debug buffer for stack reversal.
 
-	MorseCode morse;
+	MorseCode morse; //our Morse Code encoder/decoder
 
 	//Do the conversion with MorseCode.
 	morse.Ascii2Morse(quoteStack,morseStack);
