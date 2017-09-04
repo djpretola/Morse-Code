@@ -16,18 +16,23 @@
  * data bits and 1 stop bits, no parity and no flow control.
  *
  */
+#include <stdlib.h>
 #include <MorseCode.h>
-#define USERENTRYSIZE 75
+
+#define USERENTRYSIZE 75 //The max number of characters allowed for input.
+#define POT_PIN 0 //The Analog Input Pin to use for speed control.
+#define DEF_DOTTIME 60 //The default number of ms for the dot time.
 
 void displayStack(MorseStack & stack);
 void blinkMorseCodeLED(unsigned char c);
 
 /*Our Globals */
-unsigned int dotTime = 60; //The time in ms for each Morse Code dot in the LED.
-MorseCode morse;
+unsigned int dotTime; //The time in ms for each Morse Code dot in the LED.
+char number[20]; //Array to hold the ASCII representation of the dot length value.
+unsigned int dotScale; //the value to scale the dotTime, provided by analog input.
+MorseCode morse; //Morse Code converter
 unsigned char ascii[USERENTRYSIZE]; //array to hold the entered text.
 MorseStack stack(ascii,USERENTRYSIZE); //we will place the user entry into a stack.
-
 unsigned char morsecode[USERENTRYSIZE*4]; //array to hold the Morse Code
 MorseStack mc(morsecode,USERENTRYSIZE*4); //stack for the Morse Code
 
@@ -38,6 +43,9 @@ void setup()
 
   // configure the builtin LED.
   pinMode(LED_BUILTIN, OUTPUT);
+
+  // configure the analog voltage reference
+  analogReference(DEFAULT);
 }
 
 void loop() 
@@ -57,7 +65,12 @@ void loop()
           //Convert the ASCII to Morse Code
           morse.Ascii2Morse(stack,mc);
           
+          //Calculate the time for each dot, based on Analog Input
+          dotTime = calculateDotTime();
+
+          displayDotTime();
           displayStack(mc);
+          dotTime = DEF_DOTTIME; //don't forget to reset dotTime.
           break;
       case 0x7F: //BS, then remove the character from the stack
           stack.pop();
@@ -68,7 +81,35 @@ void loop()
           Serial.write(entry); //Echo back
     }
   }
-}  
+}
+
+/*
+ * Calculate the Dot time based upon the Potientiometer input.
+ * The time is between 4000ms to 60ms.
+ */
+int calculateDotTime()
+{
+  unsigned int dot = analogRead(POT_PIN) * 4.881836;
+  dot -= dot % 1000; //make sure the delay is an even number of seconds
+  if(dot > 0)
+  {
+    return dot;
+  }
+  else
+  {
+    return DEF_DOTTIME;
+  }
+}
+
+/*
+ * Display the calculated time for each Morse Code dot.
+ */
+ void displayDotTime()
+ {
+  Serial.print("Time for 1 Dot: ");
+  Serial.write(itoa(dotTime,number,10));
+  Serial.println();
+ }
 
 /*
  * Display the Morse Code in the provided stack over serial
@@ -94,7 +135,7 @@ void displayStack(MorseStack & stack)
  * provided
  */
  void blinkMorseCodeLED(unsigned char c)
- {
+{
   switch(c)
   {
     case '.': //set the LED on for the duration of the dot.
@@ -116,5 +157,4 @@ void displayStack(MorseStack & stack)
       delay(dotTime*7);
       break;
   }
- }
-
+}
