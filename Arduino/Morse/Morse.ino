@@ -19,8 +19,11 @@
 #include <stdlib.h>
 #include <MorseCode.h>
 
-#define USERENTRYSIZE 75 //The max number of characters allowed for input.
+//The output pins
 #define POT_PIN 0 //The Analog Input Pin to use for speed control.
+#define SPK_PIN 11 //The Digital Output Pin for the speaker.
+
+#define USERENTRYSIZE 75 //The max number of characters allowed for input.
 #define DEF_DOTTIME 60 //The default number of ms for the dot time.
 
 void displayStack(MorseStack & stack);
@@ -70,7 +73,9 @@ void loop()
 
           displayDotTime();
           displayStack(mc);
+
           dotTime = DEF_DOTTIME; //don't forget to reset dotTime.
+
           break;
       case 0x7F: //BS, then remove the character from the stack
           stack.pop();
@@ -103,6 +108,7 @@ int calculateDotTime()
 
 /*
  * Display the calculated time for each Morse Code dot.
+ * over Serial.
  */
  void displayDotTime()
  {
@@ -112,8 +118,9 @@ int calculateDotTime()
  }
 
 /*
- * Display the Morse Code in the provided stack over serial
- * and through blinking the LED on the board.
+ * Display the Morse Code in the provided stack over serial,
+ * through blinking the LED on the board and through the
+ * speaker.
  */
 void displayStack(MorseStack & stack)
 {
@@ -124,30 +131,34 @@ void displayStack(MorseStack & stack)
     if(c != 0)
     {
       Serial.write(c);
-      blinkMorseCodeLED(c);
+      generateMorseCode(c);
     }
   }while(c != 0);
   Serial.println();
 }
 
 /*
- * Blink the board LED based on the Morse Code character
- * provided
+ * Blink the board LED and send a 750hz tone through the speaker 
+ * based on the Morse Code character provided.
  */
- void blinkMorseCodeLED(unsigned char c)
+ void generateMorseCode(unsigned char c)
 {
   switch(c)
   {
-    case '.': //set the LED on for the duration of the dot.
-      digitalWrite(LED_BUILTIN,HIGH);
+    case '.':
+      digitalWrite(LED_BUILTIN,HIGH); //set the LED on for the duration of the dot.
+      tone(SPK_PIN,750); //Speaker on
       delay(dotTime);
       digitalWrite(LED_BUILTIN,LOW);
+      noTone(SPK_PIN); //Speaker off
       delay(dotTime); //delay between the signals for the same letter.
       break;
-    case '-': //set the LED to produce three dots
-      digitalWrite(LED_BUILTIN,HIGH);
+    case '-':
+      digitalWrite(LED_BUILTIN,HIGH); //set the LED on for three dots.
+      tone(SPK_PIN,750); //Speaker on
       delay(dotTime*3);
       digitalWrite(LED_BUILTIN,LOW);
+      noTone(SPK_PIN); //Speaker off
       delay(dotTime); //delay between signals for the same letter.
       break;
     case 'l': //delay for three dots between each letter.
