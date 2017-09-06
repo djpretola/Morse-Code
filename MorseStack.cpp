@@ -22,10 +22,17 @@ MorseStack::MorseStack(unsigned char * stack, int stackSize,int top)
 	this->top = top; //note the default value.
 }
 
-void MorseStack::push(unsigned char c)
+unsigned char MorseStack::push(unsigned char c)
 {
-	if(top != stackSize) stack[top++]=c;
-
+	if(top != stackSize)
+	{
+		stack[top++]=c;
+		return c;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 unsigned char MorseStack::pop()

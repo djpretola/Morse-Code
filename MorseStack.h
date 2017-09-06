@@ -42,9 +42,10 @@ public:
 	unsigned char c - The character to push.
 
 	Returns
-	none 
+	The unsigned char argument if the character was pushed onto the stack, 0 if
+	the stack is full. 
 	*/	
-	void push(unsigned char c);
+	unsigned char push(unsigned char c);
 
 	/*
 	Pop the first character off the stack.

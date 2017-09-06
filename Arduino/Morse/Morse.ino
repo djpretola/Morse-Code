@@ -1,7 +1,8 @@
 /*
  * A simple sketch to allow for the input of ASCII text,
  * via serial, it's conversion to Morse Code and finally
- * sending that code via the onboard LED light.
+ * sending that code via the onboard LED light, a Speaker
+ * and through digital output.
  *
  * Notes for the terminal:
  *
@@ -20,8 +21,9 @@
 #include <MorseCode.h>
 
 //The output pins
-#define POT_PIN 0 //The Analog Input Pin to use for speed control.
+#define POT_PIN 0 //The Analog Input Pin to use for morse buadrate control.
 #define SPK_PIN 11 //The Digital Output Pin for the speaker.
+#define DO_PIN 13 //The Digital Output Pin for genaric Digital Out.
 
 #define USERENTRYSIZE 75 //The max number of characters allowed for input.
 #define DEF_DOTTIME 60 //The default number of ms for the dot time.
@@ -46,6 +48,11 @@ void setup()
 
   // configure the builtin LED.
   pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
+
+  // configure the digital output pin.
+  pinMode(DO_PIN, OUTPUT);
+  digitalWrite(DO_PIN, LOW);
 
   // configure the analog voltage reference
   analogReference(DEFAULT);
@@ -82,8 +89,8 @@ void loop()
           Serial.write(entry); //Echo the backspace
           break;
       default:
-          stack.push(entry);
-          Serial.write(entry); //Echo back
+          entry = stack.push(entry);
+          Serial.write(entry); //Echo back the character pushed onto the stack.
     }
   }
 }
@@ -114,7 +121,7 @@ int calculateDotTime()
  {
   Serial.print("Time for 1 Dot: ");
   Serial.write(itoa(dotTime,number,10));
-  Serial.println();
+  Serial.println(" ms");
  }
 
 /*
@@ -130,7 +137,18 @@ void displayStack(MorseStack & stack)
     c = mc.pop();
     if(c != 0)
     {
-      Serial.write(c);
+      if(c == 'l')
+      {
+        Serial.write(' '); //one space between each morse letter.
+      }
+      else if(c == 'w')
+      {
+        Serial.write("  "); //two spaces between each morse word.
+      }
+      else
+      {
+        Serial.write(c);
+      }
       generateMorseCode(c);
     }
   }while(c != 0);
@@ -138,7 +156,7 @@ void displayStack(MorseStack & stack)
 }
 
 /*
- * Blink the board LED and send a 750hz tone through the speaker 
+ * Blink the board LED and send a 750hz tone through the speaker
  * based on the Morse Code character provided.
  */
  void generateMorseCode(unsigned char c)
@@ -148,17 +166,21 @@ void displayStack(MorseStack & stack)
     case '.':
       digitalWrite(LED_BUILTIN,HIGH); //set the LED on for the duration of the dot.
       tone(SPK_PIN,750); //Speaker on
+      digitalWrite(DO_PIN,HIGH); //Digital on
       delay(dotTime);
       digitalWrite(LED_BUILTIN,LOW);
       noTone(SPK_PIN); //Speaker off
+      digitalWrite(DO_PIN,LOW); //Digital off
       delay(dotTime); //delay between the signals for the same letter.
       break;
     case '-':
       digitalWrite(LED_BUILTIN,HIGH); //set the LED on for three dots.
       tone(SPK_PIN,750); //Speaker on
+      digitalWrite(DO_PIN,HIGH); //Digital on
       delay(dotTime*3);
       digitalWrite(LED_BUILTIN,LOW);
       noTone(SPK_PIN); //Speaker off
+      digitalWrite(DO_PIN,LOW); //Digital off
       delay(dotTime); //delay between signals for the same letter.
       break;
     case 'l': //delay for three dots between each letter.
