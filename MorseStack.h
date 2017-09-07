@@ -43,7 +43,7 @@ public:
 
 	Returns
 	The unsigned char argument if the character was pushed onto the stack, 0 if
-	the stack is full. 
+	the stack is full.
 	*/	
 	unsigned char push(unsigned char c);
 

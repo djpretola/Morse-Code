@@ -17,7 +17,6 @@
  * data bits and 1 stop bits, no parity and no flow control.
  *
  */
-#include <stdlib.h>
 #include <MorseCode.h>
 
 //The output pins
@@ -27,12 +26,13 @@
 
 #define USERENTRYSIZE 75 //The max number of characters allowed for input.
 #define DEF_DOTTIME 60 //The default number of ms for the dot time.
+#define MAXPULSECOUNT 150*3 //The max number of pulses to record for input.
 
 void displayStack(MorseStack & stack);
 void blinkMorseCodeLED(unsigned char c);
 
 /*Our Globals */
-unsigned int dotTime; //The time in ms for each Morse Code dot in the LED.
+unsigned int dotTime = DEF_DOTTIME; //The time in ms for each Morse Code dot in the LED.
 char number[20]; //Array to hold the ASCII representation of the dot length value.
 unsigned int dotScale; //the value to scale the dotTime, provided by analog input.
 MorseCode morse; //Morse Code converter
@@ -40,6 +40,8 @@ unsigned char ascii[USERENTRYSIZE]; //array to hold the entered text.
 MorseStack stack(ascii,USERENTRYSIZE); //we will place the user entry into a stack.
 unsigned char morsecode[USERENTRYSIZE*4]; //array to hold the Morse Code
 MorseStack mc(morsecode,USERENTRYSIZE*4); //stack for the Morse Code
+volatile unsigned int pulses[MAXPULSECOUNT]; //array to hold the received Digital Input timestamps.
+volatile unsigned int pulseCount = 0; //the number of time stamps in pulses[].
 
 void setup() 
 {
@@ -56,6 +58,13 @@ void setup()
 
   // configure the analog voltage reference
   analogReference(DEFAULT);
+
+  // configure our Interrupt routines
+  pinMode(2, INPUT);
+  pinMode(3, INPUT);
+  attachInterrupt(digitalPinToInterrupt(2),pulse,RISING);
+  attachInterrupt(digitalPinToInterrupt(3),pulse,FALLING);
+  interrupts(); //enable interrupts
 }
 
 void loop() 
@@ -81,8 +90,6 @@ void loop()
           displayDotTime();
           displayStack(mc);
 
-          dotTime = DEF_DOTTIME; //don't forget to reset dotTime.
-
           break;
       case 0x7F: //BS, then remove the character from the stack
           stack.pop();
@@ -93,7 +100,40 @@ void loop()
           Serial.write(entry); //Echo back the character pushed onto the stack.
     }
   }
+
+  //Process any received pulses over Digtial Input, those are Morse Code signals
+  if(pulseCount > 0)
+  {
+    int twoAway = pulseCount - 2; //The index value two away from the end of the pulse count.
+    for(int i = 0;i<pulseCount;i=i+2)
+    {
+      if(i < twoAway)
+      {
+        inputMorseCode((unsigned int)(pulses[i+1] - pulses[i]),(unsigned int)(pulses[i+2] - pulses[i+1]),mc);
+      }
+      else //we are at the end of the pulseCount and no letter or word gap on the end.
+      {
+        inputMorseCode((unsigned int)(pulses[i+1] - pulses[i]),0,mc);
+      }
+    }
+    pulseCount = 0; //reset the pulse count
+
+    //Convert the Morse Code to ASCII
+    morse.Morse2Ascii(mc,stack);
+
+    unsigned char c;
+    do
+    {
+      c = stack.pop();
+      if(c != 0)
+      {
+        Serial.write(c);
+      }
+    }while(c != 0);
+    Serial.println();
+  }
 }
+
 
 /*
  * Calculate the Dot time based upon the Potientiometer input.
@@ -120,7 +160,7 @@ int calculateDotTime()
  void displayDotTime()
  {
   Serial.print("Time for 1 Dot: ");
-  Serial.write(itoa(dotTime,number,10));
+  Serial.print(dotTime,10);
   Serial.println(" ms");
  }
 
@@ -156,7 +196,7 @@ void displayStack(MorseStack & stack)
 }
 
 /*
- * Blink the board LED and send a 750hz tone through the speaker
+ * Blink the board LED and send a 750hz tone through the speaker, and pulse the digital output pin
  * based on the Morse Code character provided.
  */
  void generateMorseCode(unsigned char c)
@@ -189,5 +229,40 @@ void displayStack(MorseStack & stack)
     case 'w': //delay for seven dots between each world
       delay(dotTime*7);
       break;
+  }
+}
+
+/*
+ *  ISR to record the timestamp of when the Digital Input goes high and low.
+ */
+void pulse()
+{
+  if(pulseCount < MAXPULSECOUNT) pulses[pulseCount++] = millis();
+}
+
+/*
+ * Push the appropriate Morse Code character into the input stack, depending upon
+ * how long the pulseTime is.
+ */
+void inputMorseCode(unsigned int pulseTime, unsigned int timeUntilNextPulse, MorseStack & inStack)
+{
+  unsigned int dashTime = dotTime * 3;
+  if(pulseTime > dotTime - 2 && pulseTime < dotTime + 2) //within +-2 ms for a dot, push '.'
+  {
+    inStack.push('.');
+  }
+  else if(pulseTime > dashTime - 2 && pulseTime < dashTime + 2) //within +-2 ms for dash, push '-'
+  {
+    inStack.push('-');
+  }
+
+  //Does a letter or word gap exist after the last pulse time?
+  if(timeUntilNextPulse > (dotTime*4) - 2 && timeUntilNextPulse < (dotTime*4) + 2) //within +-2 ms for a letter gap.
+  {
+    inStack.push('l');
+  }
+  else if(timeUntilNextPulse > (dotTime*8) - 2 && timeUntilNextPulse < (dotTime*8) + 2) //within +-2 ms for a word gap.
+  {
+    inStack.push('w');
   }
 }
