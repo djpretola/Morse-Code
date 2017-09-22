@@ -31,10 +31,6 @@
 #define DEF_DOTTIME 60 //The default number of ms for the dot time.
 #define MAXPULSECOUNT 150 //The max number of pulses to record for input.
 
-//Local Prototypes
-void displayStack(MorseStack & stack);
-void blinkMorseCodeLED(unsigned char c);
-
 /*Our Globals */
 unsigned int dotTime; //The time in ms for each Morse Code dot in the LED.
 MorseCode morse; //Morse Code converter
@@ -67,6 +63,9 @@ void setup()
 
   // configure the analog voltage reference
   analogReference(DEFAULT);
+
+  // Initalize dotTime
+  dotTime = calculateDotTime();
 
   // configure our Interrupt routines
   pinMode(DI_PIN1, INPUT);
