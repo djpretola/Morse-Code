@@ -31,6 +31,11 @@ set (morsecode_source
 	${tree_source}
 )
 
+set (queue_source
+	MorseQueue.h
+	MorseQueue.cpp
+)
+
 #Create an executable named from the project.
 add_executable (morse morse.cpp ${stack_source} ${tree_source})
 
@@ -49,6 +54,9 @@ add_executable (morse_to_ascii morse_to_ascii.cpp ${morsecode_source})
 #Create the morsecode_test executable 
 add_executable (morsecode_test morsecode_test.cpp ${morsecode_source}) 
 
+#Create the morsequeue_test executable
+add_executable (morsequeue_test morsequeue_test.cpp ${queue_source})
+
 #Add a custom command to create the Arduino source files from this project.
 add_custom_command (TARGET morse
 			POST_BUILD
@@ -57,7 +65,8 @@ add_custom_command (TARGET morse
 			COMMAND cpp -P -D_H_ARDUINO MorseTable.cpp Arduino/lib/MorseTable.cpp
 			COMMAND cpp -P -D_H_ARDUINO MorseTree.cpp Arduino/lib/MorseTree.cpp
 			COMMAND cpp -P -D_H_ARDUINO MorseCode.cpp Arduino/lib/MorseCode.cpp
-			COMMAND cp MorseStack.h MorseTable.h MorseTree.h MorseCode.h Arduino/lib/
+			COMMAND cpp -P -D_H_ARDUINO MorseQueue.cpp Arduino/lib/MorseQueue.cpp
+			COMMAND cp MorseStack.h MorseTable.h MorseTree.h MorseCode.h MorseQueue.h Arduino/lib/
 			WORKING_DIRECTORY . 
 			COMMENT "Ardunio source files Preprocessed and copied."
 )

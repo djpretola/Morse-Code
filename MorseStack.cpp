@@ -1,5 +1,3 @@
-#ifndef _H_MORSESTACK
-#define MORSESTACK
 /*
 MorseStack class
 
@@ -69,4 +67,3 @@ void MorseStack::reverse()
 		stack[j] = c;
 	}
 }
-#endif
