@@ -36,6 +36,17 @@ set (queue_source
 	MorseQueue.cpp
 )
 
+set (morseschedulerqueue_source
+	MorseSchedulerQueue.h
+	MorseSchedulerQueue.cpp
+)
+
+set (morsescheduler_source
+	MorseScheduler.h
+	MorseScheduler.cpp
+	${morseschedulerqueue_source}
+)
+
 #Create an executable named from the project.
 add_executable (morse morse.cpp ${stack_source} ${tree_source})
 
@@ -56,6 +67,9 @@ add_executable (morsecode_test morsecode_test.cpp ${morsecode_source})
 
 #Create the morsequeue_test executable
 add_executable (morsequeue_test morsequeue_test.cpp ${queue_source})
+
+#Create the morsescheduler_test executable
+add_executable (morsescheduler_test morsescheduler_test.cpp ${morsescheduler_source})
 
 #Add a custom command to create the Arduino source files from this project.
 add_custom_command (TARGET morse

@@ -12,3 +12,4 @@ morse_to_ascii
 morsecode_test
 Arduino/lib/*
 morsequeue_test
+morsescheduler_test
