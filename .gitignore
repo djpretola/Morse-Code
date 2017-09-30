@@ -13,3 +13,4 @@ morsecode_test
 Arduino/lib/*
 morsequeue_test
 morsescheduler_test
+morsescheduler_test2

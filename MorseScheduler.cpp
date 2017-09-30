@@ -14,8 +14,7 @@ MorseScheduler::MorseScheduler(MorseSchedulerQueue * queue)
 void MorseScheduler::tick(unsigned long currentTime)
 {
 	MorseSchedulerQueueElement element = queue->deq();
-	unsigned long time = element.time;
-	if(time <= currentTime) //it is time to execute the scheduled function
+	if(element.time <= currentTime) //it is time to execute the scheduled function
 	{
 		void (*fp)(void*,void*) = element.fc;
 		if(fp != 0)

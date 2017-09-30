@@ -71,6 +71,9 @@ add_executable (morsequeue_test morsequeue_test.cpp ${queue_source})
 #Create the morsescheduler_test executable
 add_executable (morsescheduler_test morsescheduler_test.cpp ${morsescheduler_source})
 
+#Create the morescheduler_test2 executable
+add_executable (morsescheduler_test2 morsescheduler_test2.cpp ${morsescheduler_source})
+
 #Add a custom command to create the Arduino source files from this project.
 add_custom_command (TARGET morse
 			POST_BUILD
