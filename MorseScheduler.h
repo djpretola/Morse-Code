@@ -32,12 +32,12 @@ public:
 	Only execute the next function scheduled to execute.
 
 	Arguments:
-	None
+	unsigned long currentTime - The current execution time, defaulted to 0.
 
 	Returns:
 	None
 	*/
-	void tick();
+	void tick(unsigned long currentTime=0);
 
 	/*
 	Schedule the provided function to execute.
@@ -45,10 +45,13 @@ public:
 	Places the function pointer at the end of the queue to await execution.
 
 	Arguments:
-	void(**func)(void*) - The function pointer to scheduler for execution
+	void(**func)(void*,void*) - The function pointer to scheduler for execution
+	void * input - The input for func, defaulted to 0
+	void * output - The output from func, defaulted to 0
+	unsigned long time - The time to schedule func to execute at, defaulted to 0
 
 	Returns:
-	void(**func)(void*) - The function pointer scheduled or 0 if the queue is full.
+	void(**func)(void*,void*) - The function pointer scheduled or 0 if the queue is full.
 	*/
-	void (*schedule(void(*c)(void*)))(void*);
+	void (*schedule(void(*c)(void*,void*), void * input=0, void * output=0, unsigned long time=0))(void*,void*);
 };

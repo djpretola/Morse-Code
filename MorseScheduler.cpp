@@ -11,16 +11,35 @@ MorseScheduler::MorseScheduler(MorseSchedulerQueue * queue)
 	this->queue = queue;
 }
 
-void MorseScheduler::tick()
+void MorseScheduler::tick(unsigned long currentTime)
 {
-	void (*fp)(void*) = queue->deq();
-	if(fp != 0)
+	MorseSchedulerQueueElement element = queue->deq();
+	unsigned long time = element.time;
+	if(time <= currentTime) //it is time to execute the scheduled function
 	{
-		fp(0);
+		void (*fp)(void*,void*) = element.fc;
+		if(fp != 0)
+		{
+			fp(element.input,element.output);
+		}
+	}
+	else //Reschedule the function element
+	{
+		queue->enq(element);
 	}
 }
 
-void (*MorseScheduler::schedule(void(*c)(void*)))(void*)
+//Remember the default values for the arguments to schedule()
+void (*MorseScheduler::schedule(void(*c)(void*,void*), void * input, void * output, unsigned long time))(void*,void*)
 {
-	return queue->enq(c);
+	MorseSchedulerQueueElement element(c,input,output,time);
+	MorseSchedulerQueueElement re = queue->enq(element);
+	if(re != element) //then return the function pointer contained in re
+	{
+		return re.fc;
+	}
+	else //return 0, the scheduling has failed.
+	{
+		return 0;
+	}
 }

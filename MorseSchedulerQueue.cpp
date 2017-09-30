@@ -1,23 +1,23 @@
 /*
 MorseSchedulerQueue class
 
-An implementation of a Queue data structure that contains pointers to functions
-of type void(*fp)(void*). The queue is circular and it is not possible to overrun
+An implementation of a Queue data structure that contains MorseSchedulerQueueElements
+The queue is circular and it is not possible to overrun
 the front of the queue, if that occurs the enq() calls will not modify the queue
-until pointers are removed. This would be a great oppertunity for STL with 
+until elements are removed. This would be a great oppertunity for STL with
 MorseQueue, but the Arduino does not appear to support it.
 */
 
 #include "MorseSchedulerQueue.h"
 
 /* Our Constructor */
-MorseSchedulerQueue::MorseSchedulerQueue(void(**queue)(void *), int size)
+MorseSchedulerQueue::MorseSchedulerQueue(MorseSchedulerQueueElement * queue, int size)
 {
 	this->queue = queue;
 	this->queueSize = size;
-	this->front = 0; //initalize both front, rear and numPointers to 0, we have an empty queue
+	this->front = 0; //initalize both front, rear and numElements to 0, we have an empty queue
 	this->rear = 0;
-	this->numPointers = 0; 
+	this->numElements = 0;
 }
 
 unsigned int MorseSchedulerQueue::incIndex(unsigned int index)
@@ -32,39 +32,60 @@ unsigned int MorseSchedulerQueue::incIndex(unsigned int index)
 	}
 }
 
-//enq() accepts a function pointer of the form void(*fp)(void*) and returns that same type.
-void (*MorseSchedulerQueue::enq(void(*c)(void*)))(void*)
+MorseSchedulerQueueElement MorseSchedulerQueue::enq(MorseSchedulerQueueElement c)
 {
-	if(front != rear || numPointers == 0)
+	if(front != rear || numElements == 0)
 	{
 		queue[front] = c;
-		++numPointers;
+		++numElements;
 		front = incIndex(front);
 		return c;
 	}
 	else //return 0, the insert failed
 	{
-		return 0;
+		return MorseSchedulerQueueElement();
 	}	
 }
 
-//deq() returns a function pointer of the form void(*fp)(void*)
-void (*MorseSchedulerQueue::deq())(void*)
+MorseSchedulerQueueElement MorseSchedulerQueue::deq()
 {
-	if(rear != front || numPointers != 0)
+	if(rear != front || numElements != 0)
 	{
-		void(*c)(void*) = queue[rear];
-		--numPointers;
+		MorseSchedulerQueueElement element = queue[rear];
+		--numElements;
 		rear = incIndex(rear);
-		return c; 
+		return element;
 	}
 	else //the queue is empty
 	{
-		return 0;
+		return MorseSchedulerQueueElement();
 	}
 }
 
 unsigned int MorseSchedulerQueue::size()
 {
-	return numPointers;
+	return numElements;
+}
+
+//Functions for the MorseSchedulerQueueElement class
+
+MorseSchedulerQueueElement::MorseSchedulerQueueElement()
+{
+	this->fc=0;
+	this->input=0;
+	this->output=0;
+	this->time=0;
+}
+
+MorseSchedulerQueueElement::MorseSchedulerQueueElement(void(*fc)(void*,void*),void * input, void * output, unsigned long time)
+{
+	this->fc=fc;
+	this->input=input;
+	this->output=output;
+	this->time=time;
+}
+
+bool MorseSchedulerQueueElement::operator!=(MorseSchedulerQueueElement compareElement)
+{
+	return this->fc != compareElement.fc || this->input != compareElement.input || this->output != compareElement.output || this->time != compareElement.time;
 }

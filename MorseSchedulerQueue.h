@@ -1,21 +1,42 @@
 /*
 MorseSchedulerQueue class
 
-An implementation of a Queue data structure that contains pointers to functions
-of type void(*func)(void*). The queue is circular and it is not possible to overrun
+An implementation of a Queue data structure that contains MorseSchedulerQueueElements.
+The queue is circular and it is not possible to overrun
 the front of the queue, if that occurs the enq() calls will not modify the queue
-until pointers are removed. This would be a great oppertunity for STL with 
+until elements are removed. This would be a great oppertunity for STL with
 MorseQueue, but the Arduino does not appear to support it.
 */
+
+/*
+The class to store in the MorseSchedulerQueue class. It stores the function pointer and
+other variables required to run and schedule the specified function.
+*/
+
+class MorseSchedulerQueueElement
+{
+public:
+	void(*fc)(void*,void*); //function pointer to the function scheduled.
+	void * input; //void pointer to the input to *fc
+	void * output; //void pointer to the output from *fc
+	unsigned long time; //the time in milliseconds for when the scheduler is to call fc(arg)
+
+	//The constructors
+	MorseSchedulerQueueElement();
+	MorseSchedulerQueueElement(void(*fc)(void*,void*),void * input, void * output, unsigned long time);
+
+	//Comparison function
+	bool operator!=(MorseSchedulerQueueElement compareElement);
+};
 
 class MorseSchedulerQueue
 {
 private:
-	void(**queue)(void*); //Pointer to the provided array to serve as the Queue.
+	MorseSchedulerQueueElement * queue; //Pointer to the provided array to serve as the Queue.
 	unsigned int queueSize; //The size of queue[].
 	unsigned int front; //the front index in queue[].
 	unsigned int rear; //the rear index in queue[].
-	unsigned int numPointers; //the number of pointers currently stored in the Queue.
+	unsigned int numElements; //the number of elements currently stored in the Queue.
 
 	/*
 	Properly increment the specified index.
@@ -38,51 +59,51 @@ public:
 	The constructor will not clear the contents of the array.
 
 	Arguments
-	void(*queue)(void*) - Pointer to the start of the array that will contain the queue.
-	int size - The number of pointers that can be stored in *queue.
+	MorseSchedulerQueueElement * queue - Pointer to the start of the array that will contain the queue.
+	int size - The number of elements that can be stored in *queue.
 
 	Returns
 	NA
 	*/
-	MorseSchedulerQueue(void(**queue)(void *), int size);
+	MorseSchedulerQueue(MorseSchedulerQueueElement * queue, int size);
 
 	/*
-	Place a specified pointer at the end of the queue.
+	Place a specified element at the end of the queue.
 
-	Places a pointer at the current rear index.
+	Places a element at the current rear index.
 
 	Arguments
-	void(*c)(void*) - The pointer to insert into the queue.
+	MorseSchedulerQueueElement c - The element to insert into the queue.
 
 	Returns
-	void(*)(void*) - The pointer inserted into the queue. 0 if the insert failed.
+	MorseSchedulerQueueElement - The element inserted into the queue. 0 if the insert failed.
 	*/
-	void (*enq(void(*c)(void*)))(void*);
+	MorseSchedulerQueueElement enq(MorseSchedulerQueueElement c);
 
 	/*
-	Remove and return the pointer at the front of the queue.
+	Remove and return the element at the front of the queue.
 	
-	Returns the current pointer currently at the front index.
+	Returns the current element currently at the front index.
 
 	Arguments
 	None
 
 	Returns
-	void(*)(void*) - The pointer present at the front of the queue, 0 if there are no
-			more pointers to return.
+	MorseSchedulerQueueElement - The element present at the front of the queue, 0 if 
+					there are no more elements to return.
 	*/
-	void (*deq())(void*); 
+	MorseSchedulerQueueElement deq();
 
 	/*
-	Return the size of the queue in pointers.
+	Return the size of the queue in MorseSchedulerQueueElements.
 
-	Returns the value of numPointers, since this variable is the true size of the queue.
+	Returns the value of numElements, since this variable is the true size of the queue.
 
 	Arguments:
 	None
 
 	Returns
-	unsigned int - The number of pointers in the queue.
+	unsigned int - The number of elements in the queue.
 	*/
 	unsigned int size();
 };

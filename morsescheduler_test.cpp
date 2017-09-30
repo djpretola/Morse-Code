@@ -11,18 +11,18 @@ functions will be scheduled to repeatadly run and display output.
 MorseScheduler * sched;
 
 //Prototypes for the test functions below
-void funcOne(void *);
-void funcTwo(void *);
-void funcThree(void *);
-void funcFour(void *);
-void funcFive(void *);
+void funcOne(void *,void*);
+void funcTwo(void *,void *);
+void funcThree(void *,void *);
+void funcFour(void *,void *);
+void funcFive(void *,void *);
 
 int main()
 {
 	/*fca[] is an array of pointers to functions that accept void * as an argument and 
 		return nothing.*/
-	void(*fca[QUEUE_SIZE])(void*); 
-	MorseSchedulerQueue schedulerQueue(fca,QUEUE_SIZE);
+	MorseSchedulerQueueElement queue[QUEUE_SIZE];
+	MorseSchedulerQueue schedulerQueue(queue,QUEUE_SIZE);
 	MorseScheduler scheduler(&schedulerQueue);
 	sched = &scheduler; //set the global pointer to the scheduler
 
@@ -45,31 +45,31 @@ int main()
 }
 
 //The functions to schedule in order
-void funcOne(void * v)
+void funcOne(void * i,void * o)
 {
 	std::cout << "Function One\n";
 	sched->schedule(&funcOne);
 }
 
-void funcTwo(void * v)
+void funcTwo(void * i,void * o)
 {
 	std::cout << "Function Two\n";
 	sched->schedule(&funcTwo);
 }
 
-void funcThree(void * v)
+void funcThree(void * i,void * o)
 {
 	std::cout << "Function Three\n";
 	sched->schedule(&funcThree);
 }
 
-void funcFour(void * v)
+void funcFour(void * i,void * o)
 {
 	std::cout << "Function Four\n";
 	sched->schedule(&funcFour);
 }
 
-void funcFive(void * v)
+void funcFive(void * i,void * o)
 {
 	std::cout << "Function Five\n";
 	sched->schedule(&funcFive);
