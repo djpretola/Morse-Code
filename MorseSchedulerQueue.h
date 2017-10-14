@@ -26,7 +26,7 @@ public:
 	MorseSchedulerQueueElement(void(*fc)(void*,void*),void * input, void * output, unsigned long time);
 
 	//Comparison function
-	bool operator!=(MorseSchedulerQueueElement compareElement);
+	bool operator==(MorseSchedulerQueueElement & compareElement);
 };
 
 class MorseSchedulerQueue
@@ -73,12 +73,12 @@ public:
 	Places a element at the current rear index.
 
 	Arguments
-	MorseSchedulerQueueElement c - The element to insert into the queue.
+	MorseSchedulerQueueElement & c - The element to insert into the queue.
 
 	Returns
 	MorseSchedulerQueueElement - The element inserted into the queue. 0 if the insert failed.
 	*/
-	MorseSchedulerQueueElement enq(MorseSchedulerQueueElement c);
+	MorseSchedulerQueueElement enq(MorseSchedulerQueueElement & c);
 
 	/*
 	Remove and return the element at the front of the queue.

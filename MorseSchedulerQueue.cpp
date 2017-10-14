@@ -32,7 +32,7 @@ unsigned int MorseSchedulerQueue::incIndex(unsigned int index)
 	}
 }
 
-MorseSchedulerQueueElement MorseSchedulerQueue::enq(MorseSchedulerQueueElement c)
+MorseSchedulerQueueElement MorseSchedulerQueue::enq(MorseSchedulerQueueElement & c)
 {
 	if(front != rear || numElements == 0)
 	{
@@ -85,7 +85,10 @@ MorseSchedulerQueueElement::MorseSchedulerQueueElement(void(*fc)(void*,void*),vo
 	this->time=time;
 }
 
-bool MorseSchedulerQueueElement::operator!=(MorseSchedulerQueueElement compareElement)
+bool MorseSchedulerQueueElement::operator==(MorseSchedulerQueueElement & compareElement)
 {
-	return this->fc != compareElement.fc || this->input != compareElement.input || this->output != compareElement.output || this->time != compareElement.time;
+	return this->fc == compareElement.fc &&
+		 this->input == compareElement.input &&
+		 this->output == compareElement.output &&
+		 this->time == compareElement.time;
 }

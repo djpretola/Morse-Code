@@ -33,7 +33,7 @@ void (*MorseScheduler::schedule(void(*c)(void*,void*), void * input, void * outp
 {
 	MorseSchedulerQueueElement element(c,input,output,time);
 	MorseSchedulerQueueElement re = queue->enq(element);
-	if(re != element) //then return the function pointer contained in re
+	if(re == element) //then return the function pointer contained in re
 	{
 		return re.fc;
 	}
