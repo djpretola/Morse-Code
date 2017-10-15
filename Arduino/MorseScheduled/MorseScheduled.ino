@@ -320,15 +320,15 @@ void startpulse()
 {
   startPulse = millis();
   unsigned int pulseGapTime = startPulse - endPulse;
-  unsigned int dotTimeFour = dotTime * 3;
-  unsigned int dotTimeEight = dotTime * 7;
+  unsigned int letterPulseGap = dotTime * 3;
+  unsigned int wordPulseGap = dotTime * 7;
   //Does a letter or word gap exist after the last pulse time?
-  if (pulseGapTime >= dotTimeFour - 2 && pulseGapTime <= dotTimeFour + 2) //within +-2 ms for a letter gap.
+  if (pulseGapTime >= letterPulseGap - 2 && pulseGapTime <= letterPulseGap + 2) //within +-2 ms for a letter gap.
   {
     recmc.enq('l');
     receivedLetter = true;
   }
-  else if (pulseGapTime >= dotTimeEight - 2 && pulseGapTime <= dotTimeEight + 2) //within +-2 ms for a word gap.
+  else if (pulseGapTime >= wordPulseGap - 2 && pulseGapTime <= wordPulseGap + 2) //within +-2 ms for a word gap.
   {
     recmc.enq('w');
     receivedWord = true;
